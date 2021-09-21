@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<svg id="your-svg" width="1000" height="1000">
+    <path id="your-path"
+    d="M379.16,173.59c0,0,2.21,4.14-0.74,6.64c-1.13,0.96-13.24,9.2-15.55,11.16c-2.26,1.93-2.89,5.68-2.33,6.5
+	c-0.56-0.82-1.83-4.78,1.46-7.58c2.29-1.95,14.49-10.26,15.62-11.22c3.24-2.75,0.69-6.52,0.69-6.52s2.7,2.59,5.74,0
+	c1.13-0.96,7.61-9.1,9.9-11.06c3.29-2.8,4.87-0.65,5.59,0.04c-0.72-0.68-2.4-0.92-4.67,1c-2.26,1.92-8.7,10.04-9.83,11
+	C382.09,176.07,379.16,173.59,379.16,173.59"
+    />
+    <!-- only to show where the point is -->
+
+</svg>
+<script>
+const svg = document.getElementById("your-svg");
+const path = document.getElementById("your-path");
+
+// SVGPoint is deprecated according to MDN
+let point = svg.createSVGPoint();
+point.x = 379.13;
+point.y = 173.32;
+
+// or according to MDN
+// let point = new DOMPoint(40, 32);
+
+console.log("In stroke:", path.isPointInStroke(point)); // shows true
+console.log("In fill:", path.isPointInFill(point)); // shows false
+</script>
+</body>
+</html>
