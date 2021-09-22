@@ -1,25 +1,27 @@
+
+
+//@collapse
 $(document).ready(function () {
-  let counter = 0;
+  var counter = 0;
       const textArray = [];
       const lineArray = [];
       const pathArray = [];
-      const polylineArray = [];
-      const linesByPoint = [];
-      const polylineByPoints = [];
+      var polylineArray = [];
+      var linesByPoint = [];
+      var polylineByPoints = [];
       const linesAndPairings = [];
-      const finals = [];
-  
+      var finals = [];
   //_*****************************************************
   //! this starts
   const text = document.querySelectorAll("text");
   let i = 0;
   text.forEach(function (text) {
     const bbox = text.getBBox();
-    const width = bbox.width;
-    const matrix =
+    var width = bbox.width;
+    let matrix =
       document.getElementsByTagName("text")[i].transform.animVal[0].matrix;
-    const x = matrix.e;
-    const y = matrix.f;
+    let x = matrix.e;
+    let y = matrix.f;
     textArray.push({ x, y, width, xPlus: x + width, width, text });
     $(text).attr("dataWidth", width);
     $(text).attr("data", "");
@@ -28,16 +30,15 @@ $(document).ready(function () {
     i++;
   });
 //********************************************
-
 //fix multiline text
-let myText = document.querySelectorAll(".st11");
+var myText = document.querySelectorAll(".st11");
 i = 0;
-let prevX = -100
-let prevY = -100
-let prevClass = 0
+var prevX = -100
+var prevY = -100
+var prevClass = 0
 myText.forEach(function (text) {
-let y = $(text).attr("dataY")
-let x = $(text).attr("dataX")
+var y = $(text).attr("dataY")
+var x = $(text).attr("dataX")
 // console.log({x,y})
 // console.log(text)
 if(x == prevX && (y - prevY < 9.5)){
@@ -63,7 +64,7 @@ i++;
     let y1 = parseFloat(line.getAttribute("y1"));
     let y2 = parseFloat(line.getAttribute("y2"));
     linesByPoint.push({ point1: { x1, y1 }, point2: { x2, y2 } });
-    let lineSlope = (y2 - y1) / (x2 - x1);
+    var lineSlope = (y2 - y1) / (x2 - x1);
     if (lineSlope == "Infinity") {
       lineSlope = 100000;
     }
@@ -74,7 +75,7 @@ i++;
     //const angle = (anchor, point) => Math.atan2(anchor.y - point.y, anchor.x - point.x) * 180 / Math.PI + 180;
     // angle in degrees, from example, same data
     angleDeg = (Math.atan2(y2 - y1, x2 - x1) * 180) / Math.PI; // 45
-    let absoluteDegree = Math.abs(angleDeg);
+    var absoluteDegree = Math.abs(angleDeg);
 
     //
     $(line).attr("slope", lineSlope);
@@ -94,18 +95,18 @@ i++;
   });
   //for getting interconnected lines
   for (let i = 0; i < lineArray.length; i++) {
-    let x3;
-    let x4;
-    let y3;
-    let y4;
+    var x3;
+    var x4;
+    var y3;
+    var y4;
     // console.log(lineArray)
-    let lineNum1 = lineArray[i].lineNUmber;
-    let x1 = lineArray[i].x1;
-    let x2 = lineArray[i].x2;
-    let y1 = lineArray[i].y1;
-    let y2 = lineArray[i].y2;
+    var lineNum1 = lineArray[i].lineNUmber;
+    var x1 = lineArray[i].x1;
+    var x2 = lineArray[i].x2;
+    var y1 = lineArray[i].y1;
+    var y2 = lineArray[i].y2;
     for (let j = 0; j < lineArray.length; j++) {
-      let lineNum2 = lineArray[j].lineNUmber;
+      var lineNum2 = lineArray[j].lineNUmber;
       x3 = lineArray[j].x1;
       x4 = lineArray[j].x2;
       y3 = lineArray[j].y1;
@@ -117,12 +118,12 @@ i++;
       }
     }
   }
-  
+
 
 //console.log('Hi ali '+intersects(486.38,508.32,514.63,516.82, 514.63, 516.82, 516.88, 505.32))
   // returns true if the line from (a,b)->(c,d) intersects with (p,q)->(r,s)
   function intersects(a, b, c, d, p, q, r, s) {
-    let det, gamma, lambda;
+    var det, gamma, lambda;
     det = (c - a) * (s - q) - (r - p) * (d - b);
     if (det === 0) {
       return false;
@@ -138,11 +139,11 @@ i++;
   i = 0;
   polyline.forEach(function (polyline) {
     let points = polyline.getAttribute("points");
-    let pointsArray = points.split(" ");
+    var pointsArray = points.split(" ");
     if (pointsArray[pointsArray.length - 1] == "") pointsArray.pop();
-    let newPointsArray = [];
+    var newPointsArray = [];
     for (let i = 0; i < pointsArray.length; i++) {
-      let splitedPoints = pointsArray[i].split(",");
+      var splitedPoints = pointsArray[i].split(",");
       newPointsArray.push([splitedPoints]);
     }
     convertPointsToLines(newPointsArray, i);
@@ -157,19 +158,19 @@ i++;
     //   console.log(newPointsArray[i]);
       //   console.log(newPointsArray[i + 1]);
 
-      let line = {
+      var line = {
         x1: newPointsArray[i][0][0],
         y1: newPointsArray[i][0][1],
         x2: newPointsArray[i + 1][0][0],
         y2: newPointsArray[i + 1][0][1],
       };
       //console.log(line);
-      let x1 = parseFloat(newPointsArray[i][0][0]);
-      let y1 = parseFloat(newPointsArray[i][0][1]);
-      let x2 = parseFloat(newPointsArray[i + 1][0][0]);
-      let y2 = parseFloat(newPointsArray[i + 1][0][1]);
+      var x1 = parseFloat(newPointsArray[i][0][0]);
+      var y1 = parseFloat(newPointsArray[i][0][1]);
+      var x2 = parseFloat(newPointsArray[i + 1][0][0]);
+      var y2 = parseFloat(newPointsArray[i + 1][0][1]);
       for (let j = 0; j < lineArray.length; j++) {
-        let lineNum = lineArray[j].lineNUmber;
+        var lineNum = lineArray[j].lineNUmber;
         x3 = lineArray[j].x1;
         x4 = lineArray[j].x2;
         y3 = lineArray[j].y1;
@@ -197,7 +198,7 @@ i++;
   isPointInsidePath(379.13, 173.32)
   //this checks if any given point is inside a path or not
   function isPointInsidePath(pointX, pointY){
-      let svg = document.getElementById("Layer_1")
+      var svg = document.getElementById("Layer_1")
       let point = svg.createSVGPoint();
       point.x = pointX
       point.y = pointY
@@ -230,11 +231,11 @@ i++;
   // chooseTheBestMatch(lineArray)
   //   chooseTheBestMatch(lineArray)
   //
-  let xx2 = (xx = document.querySelectorAll("text"));
+  var xx2 = (xx = document.querySelectorAll("text"));
   for (let i = 0; i < xx2.length; i++) {
-    let linesInText = [];
-    let regex = /line(.*?) /g;
-    let string = text[i].outerHTML;
+    var linesInText = [];
+    var regex = /line(.*?) /g;
+    var string = text[i].outerHTML;
 
     string.replace(regex, function (match, line) {
       linesInText.push(line);
@@ -252,12 +253,12 @@ i++;
   }
   function checkForMatchingY_PolyLineVersion(text, positionOfTextArray){
    
-    for (let i = 0; i < polylineArray.length; i++) {
-    let pointsArray = polylineArray[i].points.split(" ");
+    for (var i = 0; i < polylineArray.length; i++) {
+    var pointsArray = polylineArray[i].points.split(" ");
     if (pointsArray[pointsArray.length - 1] == "") pointsArray.pop();
 console.log(pointsArray)
-let line1 = {x1: pointsArray[0].replace(/,(.*?)$/g, ''), y1: pointsArray[0].replace(/^(.*?),/g, ''), x2: pointsArray[1].replace(/,(.*?)$/g, ''), y2: pointsArray[1].replace(/^(.*?),/g, '')}
-let line2 = {x1: pointsArray[pointsArray.length -2].replace(/,(.*?)$/g, ''), y1: pointsArray[pointsArray.length -2].replace(/^(.*?),/g, ''), x2: pointsArray[pointsArray.length -1].replace(/,(.*?)$/g, ''), y2: pointsArray[pointsArray.length -1].replace(/^(.*?),/g, '')}
+var line1 = {x1: pointsArray[0].replace(/,(.*?)$/g, ''), y1: pointsArray[0].replace(/^(.*?),/g, ''), x2: pointsArray[1].replace(/,(.*?)$/g, ''), y2: pointsArray[1].replace(/^(.*?),/g, '')}
+var line2 = {x1: pointsArray[pointsArray.length -2].replace(/,(.*?)$/g, ''), y1: pointsArray[pointsArray.length -2].replace(/^(.*?),/g, ''), x2: pointsArray[pointsArray.length -1].replace(/,(.*?)$/g, ''), y2: pointsArray[pointsArray.length -1].replace(/^(.*?),/g, '')}
 
 //first for line1
 if (line1.y1 < text.y + 12 && line1.y1 > text.y - 12) {
@@ -277,8 +278,8 @@ if (line2.y2 < text.y + 12 && line2.y2 > text.y - 12) {
     }
   }
   function checkForMatchingY(text, positionOfTextArray) {
-    for (let i = 0; i < lineArray.length; i++) {
-      let line = lineArray[i];
+    for (var i = 0; i < lineArray.length; i++) {
+      var line = lineArray[i];
       // console.log({ text, line });
       if (line.y1 < text.y + 12 && line.y1 > text.y - 12) {
         checkForMatchingX1(text, line, positionOfTextArray, i);
@@ -307,18 +308,18 @@ if (line2.y2 < text.y + 12 && line2.y2 > text.y - 12) {
     if (line.x1 < text.x + 10 && line.x1 > text.x - 10) {
       //console.log({lineY1: line.y1, tetxY: text.y, lineX1: line.x1, textX: text.x})
 
-      //   let xx = document.querySelectorAll("text");
+      //   var xx = document.querySelectorAll("text");
       //   $(xx[positionOfTextArray]).remove();
-      //   let yy = document.querySelectorAll("line");
+      //   var yy = document.querySelectorAll("line");
       //   $(yy[positionOfLineArray]).remove();
 
       doIt(text, line, positionOfTextArray, positionOfLineArray);
     }
     if (line.x1 < text.xPlus + 10 && line.x1 > text.xPlus - 10) {
       //console.log({lineY1: line.y1, tetxY: text.y, lineX1: line.x1, textXplys: text.xPlus})
-      //   let xx = document.querySelectorAll("text");
+      //   var xx = document.querySelectorAll("text");
       //   $(xx[positionOfTextArray]).remove();
-      //   let yy = document.querySelectorAll("line");
+      //   var yy = document.querySelectorAll("line");
       //   $(yy[positionOfLineArray]).remove();
       doIt(text, line, positionOfTextArray, positionOfLineArray);
     }
@@ -333,9 +334,9 @@ if (line2.y2 < text.y + 12 && line2.y2 > text.y - 12) {
 
     if (line.x2 < text.x + 10 && line.x2 > text.x - 10) {
       //console.log({lineY2: line.y2, tetxY: text.y, lineX2: line.x2, textX: text.x})
-      //   let xx = document.querySelectorAll("text");
+      //   var xx = document.querySelectorAll("text");
       //   $(xx[positionOfTextArray]).remove();
-      //   let yy = document.querySelectorAll("line");
+      //   var yy = document.querySelectorAll("line");
       //   $(yy[positionOfLineArray]).remove();
 
       doIt(text, line, positionOfTextArray, positionOfLineArray);
@@ -343,9 +344,9 @@ if (line2.y2 < text.y + 12 && line2.y2 > text.y - 12) {
     if (line.x2 < text.xPlus + 10 && line.x2 > text.xPlus - 10) {
       //  console.log(textArray[positionOfTextArray].text);
       //console.log({lineY2: line.y2, tetxY: text.y, lineX2: line.x2, textXPlus: text.xPlus})
-      //   let xx = document.querySelectorAll("text");
+      //   var xx = document.querySelectorAll("text");
       //   $(xx[positionOfTextArray]).remove();
-      //   let yy = document.querySelectorAll("line");
+      //   var yy = document.querySelectorAll("line");
       //   $(yy[positionOfLineArray]).remove();
 
       doIt(text, line, positionOfTextArray, positionOfLineArray);
@@ -356,24 +357,24 @@ if (line2.y2 < text.y + 12 && line2.y2 > text.y - 12) {
 
   i = 0;
   polyline.forEach(function (polyline) {
-    let numPoints = 0;
+    var numPoints = 0;
     let points = polyline.getAttribute("points");
     //	console.log(points)
-    for (let i = 0; i < points.length; i++) {
+    for (var i = 0; i < points.length; i++) {
       if (points[i] == " ") {
         numPoints++;
       }
     }
     //console.log(numPoints)
-    let newPoints = [];
-    let remaning = points;
+    var newPoints = [];
+    var remaning = points;
 
     for (let i = 0; i < numPoints; i++) {
-      let extract = points.replace(/ (.*?)$/, "");
+      var extract = points.replace(/ (.*?)$/, "");
       points = points.replace(/^(.*?) (=?)/g, "");
       //	console.log(extract)
-      let x = extract.replace(/\,(.*?)$/, "");
-      let y = extract.replace(/^(.*?),/, "");
+      var x = extract.replace(/\,(.*?)$/, "");
+      var y = extract.replace(/^(.*?),/, "");
       newPoints.push({ point: { x, y } });
     }
     polylineByPoints.push(newPoints);
@@ -404,8 +405,8 @@ if (line2.y2 < text.y + 12 && line2.y2 > text.y - 12) {
 
   ////
   function doIt(text, line, positionOfTextArray, positionOfLineArray) {
-    let xx = document.querySelectorAll("text");
-    let currentData = $(xx[positionOfTextArray]).attr("data");
+    var xx = document.querySelectorAll("text");
+    var currentData = $(xx[positionOfTextArray]).attr("data");
     $(xx[positionOfTextArray]).attr(
       "data",
       `${currentData} + text${positionOfTextArray}-line${positionOfLineArray} `
@@ -414,8 +415,8 @@ if (line2.y2 < text.y + 12 && line2.y2 > text.y - 12) {
       "dataText",
       `text${positionOfTextArray}`
     );
-    let yy = document.querySelectorAll("line");
-    //let currentLineData = $(yy[positionOfLineArray]).attr("data") + ""
+    var yy = document.querySelectorAll("line");
+    //var currentLineData = $(yy[positionOfLineArray]).attr("data") + ""
     $(yy[positionOfLineArray]).attr(
       "data",
       `text${positionOfTextArray}-line${positionOfLineArray}`
@@ -424,10 +425,10 @@ if (line2.y2 < text.y + 12 && line2.y2 > text.y - 12) {
       "dataLine",
       `line${positionOfLineArray}`
     );
-    let x = parseFloat($(xx[positionOfTextArray]).attr("dataX"));
-    let y = parseFloat($(xx[positionOfTextArray]).attr("dataY"));
-    let width = parseFloat($(xx[positionOfTextArray]).attr("dataWidth"));
-    let xPlus = x + width;
+    var x = parseFloat($(xx[positionOfTextArray]).attr("dataX"));
+    var y = parseFloat($(xx[positionOfTextArray]).attr("dataY"));
+    var width = parseFloat($(xx[positionOfTextArray]).attr("dataWidth"));
+    var xPlus = x + width;
     //console.log(typeof(x))
     lineArray[positionOfLineArray].pairings.push(positionOfTextArray);
     lineArray[positionOfLineArray].pairingsExtended.push({
@@ -441,9 +442,9 @@ if (line2.y2 < text.y + 12 && line2.y2 > text.y - 12) {
     //console.log(`text${positionOfTextArray}-line${positionOfLineArray}`);
   }
   function chooseTheBestMatch(lineArray) {
-    let text = document.querySelectorAll("text");
+    var text = document.querySelectorAll("text");
     //console.log(lineArray)
-    let line = document.querySelectorAll("line");
+    var line = document.querySelectorAll("line");
     for (let i = 0; i < lineArray.length; i++) {
       // console.log(line[i])
       if (lineArray[i].pairings.length == 1) {
@@ -463,25 +464,25 @@ if (line2.y2 < text.y + 12 && line2.y2 > text.y - 12) {
 
 
 
-      let y1 = $(text[lineArray[i].pairings[0]]).attr("dataY");
-      let y2 = $(text[lineArray[i].pairings[1]]).attr("dataY");
-      let y3 = $(text[lineArray[i].pairings[2]]).attr("dataY");
-      let y4 = $(text[lineArray[i].pairings[3]]).attr("dataY");
-      let y5 = $(text[lineArray[i].pairings[4]]).attr("dataY");
+      var y1 = $(text[lineArray[i].pairings[0]]).attr("dataY");
+      var y2 = $(text[lineArray[i].pairings[1]]).attr("dataY");
+      var y3 = $(text[lineArray[i].pairings[2]]).attr("dataY");
+      var y4 = $(text[lineArray[i].pairings[3]]).attr("dataY");
+      var y5 = $(text[lineArray[i].pairings[4]]).attr("dataY");
 
       //console.log(lineArray[i].pairings)
-      let text1 = text[lineArray[i].pairings[0]].outerHTML;
-      let text2 = text[lineArray[i].pairings[1]].outerHTML;
+      var text1 = text[lineArray[i].pairings[0]].outerHTML;
+      var text2 = text[lineArray[i].pairings[1]].outerHTML;
       //console.log(`${text1}, ${text2}`)
       //console.log({"line": lineArray[i], text1, text2})
       //if one of these text has only one line match
       //and the other one has one shared line and one extra. give the extra to second text
-      // let numLines1 = (text1.match(/line/g) || []).length;
-      // let numLines2 = (text2.match(/line/g) || []).length;
+      // var numLines1 = (text1.match(/line/g) || []).length;
+      // var numLines2 = (text2.match(/line/g) || []).length;
 
-      let linesInText1 = [];
-      let linesInText2 = [];
-      let regex = /line(.*?) /g;
+      var linesInText1 = [];
+      var linesInText2 = [];
+      var regex = /line(.*?) /g;
       text1.replace(regex, function (match, line) {
         linesInText1.push(line);
       });
@@ -494,35 +495,35 @@ if (line2.y2 < text.y + 12 && line2.y2 > text.y - 12) {
       if (linesInText1.length != linesInText2.length) {
         if (linesInText1.length > linesInText2.length) {
 
-          let diff = linesInText1.filter((e) => !linesInText2.includes(e));
-          //let same = linesInText1.filter(e => linesInText2.includes(e))
+          var diff = linesInText1.filter((e) => !linesInText2.includes(e));
+          //var same = linesInText1.filter(e => linesInText2.includes(e))
           //console.log(diff)
           // for (let i = 0; i < diff.length; i++) {
           // 	console.log(diff[i])
 
           // }
 
-          let dataText = $(text[lineArray[i].pairings[0]]).attr("dataText");
+          var dataText = $(text[lineArray[i].pairings[0]]).attr("dataText");
           $(text[lineArray[i].pairings[0]]).attr(
             "data",
             ` + ${dataText}-line${diff}`
           );
-          let newPairing = parseInt(dataText.replace(/text/g, ""));
+          var newPairing = parseInt(dataText.replace(/text/g, ""));
           lineArray[i].pairings = [newPairing];
         } else {
-          let diff = linesInText2.filter((e) => !linesInText1.includes(e));
+          var diff = linesInText2.filter((e) => !linesInText1.includes(e));
           //console.log(diff)
 
           // for (let i = 0; i < diff.length; i++) {
           // 	console.log(diff[i])
 
           // }
-          let dataText = $(text[lineArray[i].pairings[1]]).attr("dataText");
+          var dataText = $(text[lineArray[i].pairings[1]]).attr("dataText");
           $(text[lineArray[i].pairings[1]]).attr(
             "data",
             ` + ${dataText}-line${diff}`
           );
-          let newPairing = parseInt(dataText.replace(/text/g, ""));
+          var newPairing = parseInt(dataText.replace(/text/g, ""));
           lineArray[i].pairings = [newPairing];
         }
       }
@@ -546,7 +547,7 @@ if (line2.y2 < text.y + 12 && line2.y2 > text.y - 12) {
             if (lineArray[i].pairings[j] == finals[k].text) {
               lineArray[i].pairings.splice(j, 1);
               if (lineArray[i].pairings.length == 1) {
-                let newArr = [lineArray[i].pairings[0], finals[k].text];
+                var newArr = [lineArray[i].pairings[0], finals[k].text];
                 finals.push({
                   line: i,
                   text: lineArray[i].pairings[0],
@@ -569,7 +570,7 @@ if (line2.y2 < text.y + 12 && line2.y2 > text.y - 12) {
         getClosestText(lineArray[i], i);
       }
     }
-    let newFinArray = Array.from(
+    var newFinArray = Array.from(
       finals.reduce(
         (m, { line, alternativs }) =>
           alternativs.reduce(
@@ -584,8 +585,8 @@ if (line2.y2 < text.y + 12 && line2.y2 > text.y - 12) {
 
     //console.log(newFinArray);
     //remove unnessery attributes and clean the work
-    let finText = document.querySelectorAll("text");
-    let finLine = document.querySelectorAll("line");
+    var finText = document.querySelectorAll("text");
+    var finLine = document.querySelectorAll("line");
 
     for (let i = 0; i < finals.length; i++) {
       $(finText[finals[i].text]).attr("magic-line", finals[i].line);
@@ -608,21 +609,21 @@ $(".st11").css("opacity", "1");
 })
     $(".st11").on("click", function () {
         // $("text[dataX]").hide()
-        //console.log($(this).attr("magic-line-alternate"))
-        let thisDataClass = $(this).attr("dataClass")
+        console.log($(this).attr("magic-line-alternate"))
+        var thisDataClass = $(this).attr("dataClass")
         
       $(".st11").css("opacity", ".2");
       $(this).css("opacity", "1").attr("id", "selected");
       $(`text[dataClass = ${thisDataClass}]`).css("opacity", "1")
-      let dataLine = $(this).attr("magic-line");
+      var dataLine = $(this).attr("magic-line");
       $(line).css("opacity", ".2");
       $(line[dataLine]).css("opacity", "1");
       // //seting background effect not working!
-      // let ctx = document.getElementById("Layer_1")
-      // let textElement = ctx.getElementById("selected")
-      // let svgRect = textElement.getBBox()
+      // var ctx = document.getElementById("Layer_1")
+      // var textElement = ctx.getElementById("selected")
+      // var svgRect = textElement.getBBox()
       // //alert(svgRect.x)
-      // let rect = document.createElementNS("hhtp://www.w3.org/2000/svg", "rect");
+      // var rect = document.createElementNS("hhtp://www.w3.org/2000/svg", "rect");
       // rect.setAttribute("x", 200)
       // rect.setAttribute("hiAli", "aleyk ali")
       // rect.setAttribute("y", 200)
@@ -633,36 +634,36 @@ $(".st11").css("opacity", "1");
       // console.log(dataLine)
     });
     function getClosestText(line, lineNum) {
-      let totalDistance = [];
-      let reamins = [];
+      var totalDistance = [];
+      var reamins = [];
       for (let i = 0; i < line.pairingsExtended.length; i++) {
         reamins.push(line.pairingsExtended[i].text);
-        let text = line.pairingsExtended[i];
-        let textY = text.y;
-        let lineY1 = line.y1;
-        let lineY2 = line.y2;
-        let lineX1 = line.x1;
-        let lineX2 = line.x2;
-        let verticalDistance1 = Math.abs(lineY1 - textY);
-        let verticalDistance2 = Math.abs(lineY2 - textY);
-        let textX = text.x;
-        let textXPLus = text.xPlus;
-        let horisontalDistance1 = Math.min(
+        var text = line.pairingsExtended[i];
+        var textY = text.y;
+        var lineY1 = line.y1;
+        var lineY2 = line.y2;
+        var lineX1 = line.x1;
+        var lineX2 = line.x2;
+        var verticalDistance1 = Math.abs(lineY1 - textY);
+        var verticalDistance2 = Math.abs(lineY2 - textY);
+        var textX = text.x;
+        var textXPLus = text.xPlus;
+        var horisontalDistance1 = Math.min(
           Math.abs(lineX1 - textX),
           Math.abs(lineX1 - textXPLus)
         );
-        let horisontalDistance2 = Math.min(
+        var horisontalDistance2 = Math.min(
           Math.abs(lineX2 - textX),
           Math.abs(lineX2 - textXPLus)
         );
 
-        let minDistance = Math.min(
+        var minDistance = Math.min(
           verticalDistance1 + horisontalDistance1,
           verticalDistance2 + horisontalDistance2
         );
         totalDistance.push(minDistance);
       }
-      let min = Math.min.apply(Math, totalDistance);
+      var min = Math.min.apply(Math, totalDistance);
 
       finals.push({
         line: lineNum,
