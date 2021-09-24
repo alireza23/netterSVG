@@ -43,9 +43,10 @@ $(document).ready(function () {
   //! fix multiline texts and group them as one
   fixMultiLineTexts(texts);
   //! we send bothLeaderAndTextAreUnique and remainingsMatched to a function that makes on click listeber for them
- console.log(bothLeaderAndTextAreUnique)
+ //console.log(bothLeaderAndTextAreUnique)
   handleOnclickListner(bothLeaderAndTextAreUnique);
   handleOnclickListner(remainingsMatched);
+  console.log(remainingsMatched)
 });
 
 //-=================================== functions START ==================================
@@ -173,14 +174,14 @@ function setupText(texts) {
   remainings = removeDuplicatesFromRemainings();
 
   remainings = trimRemainings();
-  console.log(remainings);
+  //console.log(remainings);
 
   //! now we have an array of lines and polylines that each one is linked to one or more text,
   //! if it is one text we dont have much troble but we should decide here the best match for each line
 
   chooseTheBestMatch();
   //! here all remaining are matchded to their best text match and we can actualy do somehing
-  console.log(remainingsMatched);
+  //console.log(remainingsMatched);
 }
 //sub================================================================================
 function handleOnclickListner(leaderTextMatch) {
@@ -253,15 +254,17 @@ function chooseTheBestMatch() {
       //? for polyline we should get polyline with its id or somethig else
       //? dont change polyline numbering its used in line grouping!
       const lineNumber = remainings[i].line;
+  // console.log(remainings[i])
 
       let min = 100000000; //a very big number!
       let winnerText = "";
       for (let j = 0; j < remainings[i].texts.length; j++) {
         const textNumber = remainings[i].texts[j];
+    //console.log(textNumber)
 
    
         minDistance = calculateMinDistance(lineNumber, textNumber);
-//    console.log({lineNumber, textNumber, minDistance})
+    console.log({line:lineNumber, text: textNumber, minDistance})
 
         // console.log({minDistance})
         if (minDistance < min) {
@@ -271,7 +274,7 @@ function chooseTheBestMatch() {
       }
       //! here we should do something
      // console.log({ line: lineNumber, text: winnerText })
-      remainingsMatched.push({ line: lineNumber, text: winnerText });
+      remainingsMatched.push({ line: lineNumber, text: winnerText, minDistance });
     } else {
       //*this is polyline
       const polylineNumber = remainings[i].polyline;
@@ -304,7 +307,7 @@ function chooseTheBestMatch() {
     textX = parseFloat($(text).attr("dataX"));
     textY = parseFloat($(text).attr("dataY"));
     textXPLUS = textX + parseFloat($(text).attr("dataWidth"));
-    textYPLUS = textY - parseFloat($(text).attr("dataWidth"));
+    textYPLUS = textY - parseFloat($(text).attr("dataHeight"));
 
     let realMin = 10000000;
     for (let i = 0; i < polyLineConvertedToLines.length; i++) {
@@ -322,6 +325,7 @@ function chooseTheBestMatch() {
       const d7 = Math.abs(lineY2 - textY) + Math.abs(lineX2 - textXPLUS);
       const d8 = Math.abs(lineY2 - textYPLUS) + Math.abs(lineX2 - textXPLUS);
       const min = Math.min(d1, d2, d3, d4, d5, d6, d7, d8);
+    
       if (min < realMin) {
         realMin = min;
       }
@@ -340,7 +344,7 @@ function chooseTheBestMatch() {
     textX = parseFloat($(text).attr("dataX"));
     textY = parseFloat($(text).attr("dataY"));
     textXPLUS = textX + parseFloat($(text).attr("dataWidth"));
-    textYPLUS = textY - parseFloat($(text).attr("dataWidth"));
+    textYPLUS = textY - parseFloat($(text).attr("dataHeight"));
     const d1 = Math.abs(lineY1 - textY) + Math.abs(lineX1 - textX);
     const d2 = Math.abs(lineY1 - textYPLUS) + Math.abs(lineX1 - textX);
     const d3 = Math.abs(lineY1 - textY) + Math.abs(lineX1 - textXPLUS);
@@ -350,6 +354,7 @@ function chooseTheBestMatch() {
     const d7 = Math.abs(lineY2 - textY) + Math.abs(lineX2 - textXPLUS);
     const d8 = Math.abs(lineY2 - textYPLUS) + Math.abs(lineX2 - textXPLUS);
     const min = Math.min(d1, d2, d3, d4, d5, d6, d7, d8);
+    console.log({lineNumber, textNumber, d6})
     // console.log({d1, d2, d3, d4, d5, d6, d7, d8})
 
 
