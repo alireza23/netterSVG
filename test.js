@@ -1,6 +1,6 @@
 
 
-//@collapse
+
 $(document).ready(function () {
   var counter = 0;
       const textArray = [];
