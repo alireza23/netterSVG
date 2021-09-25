@@ -1,3 +1,4 @@
+//? should modify some calculations and .st11 because some fonts changed!
 const textArray = [];
 const lineArray = [];
 const linesByPoint = [];
@@ -12,7 +13,7 @@ let polylineMatches = [];
 let bothLeaderAndTextAreUnique = [];
 let remainings = [];
 let remainingsMatched = [];
-
+let selectedItems = [];
 //-========================================START=====================================ANCHOR start
 $(document).ready(function () {
   //! creates a rectangle and prepends it to svg. this rect is used when user clicks
@@ -43,14 +44,49 @@ $(document).ready(function () {
   //! fix multiline texts and group them as one
   fixMultiLineTexts(texts);
   //! we send bothLeaderAndTextAreUnique and remainingsMatched to a function that makes on click listeber for them
- //console.log(bothLeaderAndTextAreUnique)
+  //console.log(bothLeaderAndTextAreUnique)
   handleOnclickListner(bothLeaderAndTextAreUnique);
   handleOnclickListner(remainingsMatched);
-  console.log(remainingsMatched)
+  console.log(remainingsMatched);
+  experiment();
 });
 
 //-=================================== functions START ==================================
+function experiment() {
+  $(".st11").on("click", function () {
+    const textClass = $(this).attr("textClass");
+    $(`text[textClass = ${textClass}]`).css("fill", "#6c5ce7");
+    selectedItems.push({ text: textClass });
+    console.log(selectedItems);
+    console.log("click on text");
+  });
+  $("path").on("click", function () {
+    const group = $(this).attr("lineGroup");
+    $(`*[lineGroup = ${group}]`).css("stroke", "#6c5ce7");
+    $(`path[lineGroup = ${group}]`).css("fill", "#6c5ce7");
+    selectedItems.push({ element: group });
+    console.log(selectedItems);
+    console.log("click on path");
+  });
+  $("line").on("click", function () {
+    const group = $(this).attr("lineGroup");
+    $(`*[lineGroup = ${group}]`).css("stroke", "#6c5ce7");
+    $(`path[lineGroup = ${group}]`).css("fill", "#6c5ce7");
+    selectedItems.push({ element: group });
+    console.log(selectedItems);
+    console.log("click on line");
+  });
+  $("polyline").on("click", function () {
+    const group = $(this).attr("lineGroup");
+    $(`*[lineGroup = ${group}]`).css("stroke", "#6c5ce7");
+    $(`path[lineGroup = ${group}]`).css("fill", "#6c5ce7");
+    selectedItems.push({ element: group });
+    console.log(selectedItems);
+    console.log("click on polyline");
+  });
+}
 
+//sub================================================================
 //*function to create fake thick lines that user can click on it
 function makesLinesClickable(svg) {
   //!makes lines clickable
@@ -63,13 +99,16 @@ function makesLinesClickable(svg) {
     groupCounter++;
     //! get x1 y1 x2 y2 of each line and send out as aprams for creating fake lines
     //! these fake lines are thicker and used to grab when user wants to correct errors!
-    createAndAppendFakeLines(
-      line.x1.baseVal.value,
-      line.y1.baseVal.value,
-      line.x2.baseVal.value,
-      line.y2.baseVal.value,
-      id
-    );
+    // createAndAppendFakeLines(
+    //   line.x1.baseVal.value,
+    //   line.y1.baseVal.value,
+    //   line.x2.baseVal.value,
+    //   line.y2.baseVal.value,
+    //   id
+    // );
+    $(line).css("stroke", "black");
+    $(line).css("stroke-width", "5");
+    $(line).css("stroke-opacity", ".5");
     i++;
   });
 
@@ -82,21 +121,33 @@ function makesLinesClickable(svg) {
     $(polyline).attr("dataID", `polyline${id}`);
     $(polyline).attr("lineGroup", `group${groupCounter}`);
     groupCounter++;
+    $(polyline).css("stroke", "black");
+    $(polyline).css("stroke-width", "5");
+    $(polyline).css("stroke-opacity", ".5");
     //! get x1 y1 x2 y2 of each line and send out as aprams for creating fake lines
     //! these fake lines are thicker and used to grab when user wants to correct errors!
-    const points = polyline.getAttribute("points");
-    const seperatedPoints = splitPointsToSeperatedPoints(points);
-    const polyLineConvertedToLines = convertPointsToLines(seperatedPoints);
-    for (let j = 0; j < polyLineConvertedToLines.length; j++) {
-      createAndAppendFakeLines(
-        polyLineConvertedToLines[j].x1,
-        polyLineConvertedToLines[j].y1,
-        polyLineConvertedToLines[j].x2,
-        polyLineConvertedToLines[j].y2,
-        id
-      );
-    }
+    // const points = polyline.getAttribute("points");
+    // const seperatedPoints = splitPointsToSeperatedPoints(points);
+    // const polyLineConvertedToLines = convertPointsToLines(seperatedPoints);
+    // for (let j = 0; j < polyLineConvertedToLines.length; j++) {
+    //   createAndAppendFakeLines(
+    //     polyLineConvertedToLines[j].x1,
+    //     polyLineConvertedToLines[j].y1,
+    //     polyLineConvertedToLines[j].x2,
+    //     polyLineConvertedToLines[j].y2,
+    //     id
+    //   );
+    // }
     i++;
+  });
+  //? make path clickable
+  //? note! this is just for production and should be removed from releasing app!
+  const path = document.querySelectorAll("path");
+  i = 0;
+  path.forEach((path) => {
+    let id = i;
+    $(path).attr("lineGroup", `group${groupCounter}`);
+    groupCounter++;
   });
 }
 
@@ -105,7 +156,7 @@ function makesLinesClickable(svg) {
 //*this function get 4 number and creates a fakeline and gives it an id and class
 function createAndAppendFakeLines(x1, y1, x2, y2, id) {
   let newLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
-  newLine.setAttribute("dataID", `Line${id}`);
+  newLine.setAttribute("dataID", `line${id}`);
   newLine.setAttribute("class", `fakeLine`);
   newLine.setAttribute("x1", x1);
   newLine.setAttribute("y1", y1);
@@ -156,6 +207,7 @@ function setupText(texts) {
     $(text).attr("dataY", y);
     $(text).attr("dataWidth", width);
     $(text).attr("dataHeight", height);
+    //! setonclick listner for texts
 
     //!search for matching lines
     searchForMatchingLine(mText, i);
@@ -168,7 +220,6 @@ function setupText(texts) {
   //! in remainings array
   searchForUniqueLeader();
   //! now both bothLeaderAndTextAreUnique array and remainings are ready for use!
-  
 
   //? hamdle bothLeaderAndTextAreUnique() --> create handleUniques()
   remainings = removeDuplicatesFromRemainings();
@@ -192,21 +243,16 @@ function handleOnclickListner(leaderTextMatch) {
   const polylines = document.querySelectorAll("polyline");
   const paths = document.querySelectorAll("path");
 
-
-
   for (let i = 0; i < leaderTextMatch.length; i++) {
-
     const textNum = leaderTextMatch[i].text;
     const textClass = $(texts[textNum]).attr("textClass");
-
 
     if (leaderTextMatch[i].hasOwnProperty("line")) {
       const lineNum = leaderTextMatch[i].line;
       const lineGroup = $(lines[lineNum]).attr("lineGroup");
-   
 
       $(`text[textClass = ${textClass}]`).on("click", function () {
-        console.log("hey")
+        console.log("hey");
         $(lines).css("opacity", opacity);
         $(polylines).css("opacity", opacity);
         $(`path[specialPath = true]`).css("opacity", opacity);
@@ -225,7 +271,7 @@ function handleOnclickListner(leaderTextMatch) {
       const polylineNum = leaderTextMatch[i].polyline;
       const lineGroup = $(polylines[polylineNum]).attr("lineGroup");
       $(`text[textClass = ${textClass}]`).on("click", function () {
-        console.log("hi")
+        console.log("hi");
 
         $(lines).css("opacity", opacity);
         $(polylines).css("opacity", opacity);
@@ -246,7 +292,7 @@ function chooseTheBestMatch() {
   const texts = document.querySelectorAll(".st11");
   const lines = document.querySelectorAll("line");
   const polylines = document.querySelectorAll("polyline");
-//console.log($(texts[54]))
+  //console.log($(texts[54]))
   for (let i = 0; i < remainings.length; i++) {
     // console.log(remainings[i])
     if (remainings[i].hasOwnProperty("line")) {
@@ -254,17 +300,16 @@ function chooseTheBestMatch() {
       //? for polyline we should get polyline with its id or somethig else
       //? dont change polyline numbering its used in line grouping!
       const lineNumber = remainings[i].line;
-  // console.log(remainings[i])
+      // console.log(remainings[i])
 
       let min = 100000000; //a very big number!
       let winnerText = "";
       for (let j = 0; j < remainings[i].texts.length; j++) {
         const textNumber = remainings[i].texts[j];
-    //console.log(textNumber)
+        //console.log(textNumber)
 
-   
         minDistance = calculateMinDistance(lineNumber, textNumber);
-    console.log({line:lineNumber, text: textNumber, minDistance})
+        console.log({ line: lineNumber, text: textNumber, minDistance });
 
         // console.log({minDistance})
         if (minDistance < min) {
@@ -273,8 +318,12 @@ function chooseTheBestMatch() {
         }
       }
       //! here we should do something
-     // console.log({ line: lineNumber, text: winnerText })
-      remainingsMatched.push({ line: lineNumber, text: winnerText, minDistance });
+      // console.log({ line: lineNumber, text: winnerText })
+      remainingsMatched.push({
+        line: lineNumber,
+        text: winnerText,
+        minDistance,
+      });
     } else {
       //*this is polyline
       const polylineNumber = remainings[i].polyline;
@@ -307,7 +356,8 @@ function chooseTheBestMatch() {
     textX = parseFloat($(text).attr("dataX"));
     textY = parseFloat($(text).attr("dataY"));
     textXPLUS = textX + parseFloat($(text).attr("dataWidth"));
-    textYPLUS = textY - parseFloat($(text).attr("dataHeight"));
+    //? what is this -1 this fix is for something!
+    textYPLUS = textY - parseFloat($(text).attr("dataHeight")) - 1;
 
     let realMin = 10000000;
     for (let i = 0; i < polyLineConvertedToLines.length; i++) {
@@ -325,7 +375,17 @@ function chooseTheBestMatch() {
       const d7 = Math.abs(lineY2 - textY) + Math.abs(lineX2 - textXPLUS);
       const d8 = Math.abs(lineY2 - textYPLUS) + Math.abs(lineX2 - textXPLUS);
       const min = Math.min(d1, d2, d3, d4, d5, d6, d7, d8);
-    
+      console.log({
+        polylineNumber,
+        textNumber,
+        d5,
+        d6,
+        lineX2,
+        lineY2,
+        textYPLUS,
+        textX,
+      });
+
       if (min < realMin) {
         realMin = min;
       }
@@ -354,9 +414,8 @@ function chooseTheBestMatch() {
     const d7 = Math.abs(lineY2 - textY) + Math.abs(lineX2 - textXPLUS);
     const d8 = Math.abs(lineY2 - textYPLUS) + Math.abs(lineX2 - textXPLUS);
     const min = Math.min(d1, d2, d3, d4, d5, d6, d7, d8);
-    console.log({lineNumber, textNumber, d6})
+    //console.log({ lineNumber, textNumber, d6 });
     // console.log({d1, d2, d3, d4, d5, d6, d7, d8})
-
 
     return min;
   }
@@ -432,7 +491,7 @@ function searchForUniqueLeader() {
     _.orderBy(_.orderBy(polylineMatches, "polyline"), "text"),
     _.isEqual
   );
- // console.log(linesMatches)
+  // console.log(linesMatches)
 
   for (let i = 0; i < polylineMatches.length; i++) {
     var polyline = polylineMatches[i].polyline;
@@ -488,11 +547,10 @@ function searchForUniqueLeader() {
       checkPolyline.length == 0
     ) {
       bothLeaderAndTextAreUnique.push({ line, text });
-     // console.log({ line, text })
+      // console.log({ line, text })
     } else {
       remainings.push({ line, text });
-    //  console.log({ line, text })
-
+      //  console.log({ line, text })
     }
   }
   remainings = _.orderBy(remainings, "line");
@@ -501,7 +559,6 @@ function searchForUniqueLeader() {
 //sub==================================================================================
 function searchForMatchingLine(text, textNum) {
   checkForMatchingY(text, textNum);
- 
 }
 function searchForMatchingPolyline(text, textNum) {
   checkForMatchingYPolylineVersion(text, textNum);
@@ -549,16 +606,15 @@ function checkForMatchingX2PolyLineVersion(text, line, textNum, polyLineNum) {
 //! we have text and all text info here, we want to examine all lines y parameter,
 //! to find which line y is near enough to text y
 function checkForMatchingY(text, textNum) {
-
   //!here we compare text and "lines"
   for (var i = 0; i < lineArray.length; i++) {
     var line = lineArray[i];
-    
+
     if (line.y1 < text.y + 12 && line.y1 > text.y - 12) {
       //! now we have some line that matches vertically with our text
       //! we should compare their X!
       checkForMatchingX1(text, line, textNum, i);
-    //  console.log(textNum, i);
+      //  console.log(textNum, i);
     }
     if (line.y2 < text.y + 12 && line.y2 > text.y - 12) {
       checkForMatchingX2(text, line, textNum, i);
@@ -629,6 +685,8 @@ function fixMultiLineTexts(texts) {
 function setupLines(lines) {
   i = 0;
   lines.forEach(function (line) {
+    //! setonclick listner for lines
+
     let x1 = parseFloat(line.getAttribute("x1"));
     let x2 = parseFloat(line.getAttribute("x2"));
     let y1 = parseFloat(line.getAttribute("y1"));
@@ -719,6 +777,8 @@ function intersects(a, b, c, d, p, q, r, s) {
 function setupPolyLines(polyline) {
   i = 0;
   polyline.forEach(function (polyline) {
+    //! setonclick listner for polylines
+
     const points = polyline.getAttribute("points");
     const seperatedPoints = splitPointsToSeperatedPoints(points);
     const polyLineConvertedToLines = convertPointsToLines(seperatedPoints);
@@ -904,7 +964,11 @@ function setupPaths(paths) {
     //! check for intersect
     checkPathforIntersectWithLines(path, i);
     checkPathforIntersectWithPolylinesLines(path, i);
-    checkPathToPathIntersect(path, i);
+    //? we comment out this here because it takes time
+    //? but when we want to use this app we should uncoment it!
+    //? checkPathToPathIntersect(path, i);
+    //! setonclick listner for pathes
+
     i++;
   });
 }
@@ -944,7 +1008,68 @@ function checkPathforIntersectWithPolylinesLines(path, pathNum) {
 
 //sub=================================================================================
 function checkPathToPathIntersect(path, pathNum) {
-  //? here should recognize overlapping paths
+  //! here we recognize overlapping paths
+  const paths = document.querySelectorAll("path");
+  const path1 = path;
+  //console.log(path3)
+  for (let i = 0; i < paths.length; i++) {
+    const path2 = paths[i];
+    getIntersection(path1, path2, pathNum, i);
+  }
+
+  // const path1 = document.getElementById("pp1");
+  // const path2 = document.getElementById("pp2");
+
+  function getIntersection(path1, path2, path1Num, path2Num) {
+    var path1Length = path1.getTotalLength(),
+      path2Length = path2.getTotalLength(),
+      path2Points = [];
+
+    for (var j = 0; j < path2Length; j++) {
+      path2Points.push(path2.getPointAtLength(j));
+    }
+
+    for (var i = 0; i < path1Length; i++) {
+      var point1 = path1.getPointAtLength(i);
+
+      for (var j = 0; j < path2Points.length; j++) {
+        if (pointIntersect(point1, path2Points[j])) {
+          if (path1Num < path2Num) {
+            toBeConnected.push([
+              { type: "path", num: path1Num },
+              { type: "path", num: path2Num },
+            ]);
+            // console.log(path1);
+            // console.log(path2);
+            // console.log(
+            //   point1.x +
+            //     "," +
+            //     point1.y +
+            //     " " +
+            //     path2Points[j].x +
+            //     "," +
+            //     path2Points[j].y +
+            //     "," +
+            //     path1Num +
+            //     "," +
+            //     path2Num +
+            //     ","
+            // );
+          }
+          // result.innerHTML = point1.x + ',' + point1.y + ' ' + path2Points[j].x + ',' + path2Points[j].y;
+          return;
+        }
+      }
+    }
+  }
+
+  function pointIntersect(p1, p2) {
+    p1.x = Math.round(p1.x);
+    p1.y = Math.round(p1.y);
+    p2.x = Math.round(p2.x);
+    p2.y = Math.round(p2.y);
+    return p1.x === p2.x && p1.y === p2.y;
+  }
 }
 //sub==================================================================================
 
@@ -988,9 +1113,10 @@ function isPointInsidePath(
 
 function makeLineGroups() {
   //? this line is just for test removed!
-  toBeConnected.push();
+  // toBeConnected.push();
   handleSimpleConnectingElements();
   checkForCommonPoint();
+  console.log(toBeConnected);
 }
 
 //sub==================================================================================
