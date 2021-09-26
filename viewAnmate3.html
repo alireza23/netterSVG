@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+  background-color:#111;
+  color:white;
+  
+}
+#demo{
+  position:relative;
+  width:800px;
+  height:300px;
+  background-color:#000;
+  margin:auto;
+  overflow:hidden;
+}
+
+#demo h3 {
+  position:absolute;
+  font-family: 'Asap', sans-serif;
+  font-weight:700;
+  margin:0;
+  padding:0;
+  width:800px;
+  text-align:center;
+  visibility:hidden;
+  font-size:120px;
+  top:65px;
+  will-change: transform;
+}
+h2 {
+  color:#9af600;
+  margin-left:24px;
+  margin-bottom:0px;
+}
+li {
+  font-family: 'Asap', sans-serif;
+  color:#999;
+  margin-bottom:10px;
+}
+    </style>
+</head>
+<body>
+    <!-- This effect is an enhanced version of https://codepen.io/GreenSock/pen/AGzci which only animated 1 word at a time.  -->
+
+<link href='https://fonts.googleapis.com/css?family=Asap:400,700' rel='stylesheet' type='text/css'>
+<div id="demo"></div>
+<h2>special features</h2>
+<ul>
+  <li>Duration of each chunk's animation is based on character count giving you more time to read longer chunks</li>    
+  <li>Last part of the sentence stays on screen longer</li>
+  <li>Pause added after each sentence</li>
+</ul>
+<script src="./jquery-3.4.1.min.js"></script>
+<script src="./js/TweenMax.min.js"></script>
+<script src="./TextPlugin.min_2.js"></script>
+<script>
+    var container = $("#demo"),
+    _sentenceEndExp = /(\.|\?|!)$/g; //regular expression to sense punctuation that indicates the end of a sentence so that we can adjust timing accordingly
+
+//this function just takes a string of text and splits it into an array based on the maximum length that should be allowed to exist in each line, and when it encounters the end of a sentence (ending in ".", "?", or "!"), it will force a line break too.
+function buildChunks(text, maxLength) {
+  if (maxLength === undefined) {
+    return text.split(" ");
+  }
+  var words = text.split(" "),
+      wordCount = words.length,
+      chunk = [],
+      chunks = [], i;
+  for (i = 0; i < wordCount; i++){
+    chunk.push(words[i]);
+    if (_sentenceEndExp.test(words[i]) || i === wordCount - 1 || chunk.join(" ").length + words[i+1].length > maxLength) {
+      chunks.push(chunk.join(" "));
+      chunk = [];
+    }
+  }
+  return chunks;
+}
+
+function machineGun(chunks, maxLength) {
+  //in case "chunks" isn't an array, we'll build chunks automatically
+  if (!(chunks instanceof Array)) {
+    chunks = buildChunks(chunks, maxLength);
+  }
+  
+  var tl = new TimelineMax({delay:0.6, repeat:2, repeatDelay:4}),
+      time = 0,
+      chunk, element, duration, isSentenceEnd, i;
+  
+  for (i = 0; i < chunks.length; i++) {
+    chunk = chunks[i];
+    isSentenceEnd = _sentenceEndExp.test(chunk) || (i === chunks.length - 1);
+    element = $("<h3>" + chunk + "</h3>").appendTo(container);
+      duration = Math.max(0.5, chunk.length * 0.08); //longer words take longer to read, so adjust timing. Minimum of 0.5 seconds.
+      if (isSentenceEnd) {
+        duration += 0.6; //if it's the last word in a sentence, drag out the timing a bit for a dramatic pause.
+      }
+      //set opacity and scale to 0 initially. We set z to 0.01 just to kick in 3D rendering in the browser which makes things render a bit more smoothly.
+    TweenLite.set(element, {autoAlpha:0, scale:0, z:0.01});
+    //the SlowMo ease is like an easeOutIn but it's configurable in terms of strength and how long the slope is linear. See https://www.greensock.com/v12/#slowmo and https://api.greensock.com/js/com/greensock/easing/SlowMo.html
+    tl.to(element, duration, {scale:1.2,  ease:SlowMo.ease.config(0.25, 0.9)}, time)
+      //notice the 3rd parameter of the SlowMo config is true in the following tween - that causes it to yoyo, meaning opacity (autoAlpha) will go up to 1 during the tween, and then back down to 0 at the end. 
+        .to(element, duration, {autoAlpha:1, ease:SlowMo.ease.config(0.25, 0.9, true)}, time);
+      time += duration - 0.05;
+      if (isSentenceEnd) {
+        time += 0.6; //at the end of a sentence, add a pause for dramatic effect.
+      }
+    }
+}
+
+machineGun("This text will suck you in and you will not believe what is coming next. Actually that is about all that is going to happen. I am glad you watched. THE END", 12);
+
+/* learn more about the GreenSock Animation Platfrom (GSAP) for JS
+
+https://www.greensock.com/gsap-js/
+
+watch a quick video on how TimelineLite allows you to sequence animations like a pro
+https://www.greensock.com/sequence-video/
+
+*/
+</script>
+</body>
+</html>

@@ -16,6 +16,7 @@ tl.from(image, { y: 450, x: 520, duration: duration })
   .from(image6, { y: 450, x: 520, duration: duration })
   .from(image7, {opacity: 0, transformOrigin: "37% 55%",rotation: 40,duration: 1.2,ease: "easeOut",})
   .from(image8,{ y: 450, x: 520, duration: duration })
+gsap.to(image3, 1, {morphSVG: image4})
 
 // animate(image, 450, .8);
 // animate(image2, 450, .8);
