@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>PinchZoomer Content Zoomer jQuery Plugin</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+
+
+
+    <!-- <link href="css/preview.min.css" type="text/css" rel="stylesheet"> -->
+
+    <script src="./js/jquery-1.11.3.min.js"></script>
+
+    <!-- <script src="js/jquery.mousewheel.min.js" type="text/javascript"></script> -->
+    <script src="js/hammer.min.js" type="text/javascript"></script>
+    <script src="js/TweenMax.min.js" type="text/javascript"></script>
+    <script src="js/jquery.pinchzoomer.min.js" type="text/javascript"></script>
+    <script>
+      // jQuery(document).ready(function($) {
+      //   $("#pinch").pinchzoomer();
+      // });
+    </script>
+    <style>
+        html{
+            background-color: darkblue;
+        }
+.zoomHolder
+{
+   /* width:100%; */
+   height:auto;
+   position:relative;
+   overflow:hidden;
+   display: block;
+    float: none;
+}
+ 
+.layerImg
+{
+   position:absolute;
+   /* left:0px;
+   top:0px;
+   right:auto;
+   bottom:auto; 
+   height: 100vh !important; */
+
+}
+
+    </style>
+  </head>
+
+  <body>
+    <!-- https://www.ronfeliciano.com/pinchzoomer/pz_options_example.html -->
+
+
+      <div class="zoomHolder"  >
+        <div
+          id="pinch" class="pinch"
+          data-elem="pinchzoomer" 
+          data-options="maxZoom:5; minZoom:1;  zoomStep:.5;"
+        >
+        
+          <img
+            id="streetLayer"
+            data-src="./assets/base_bw.png"
+            data-elem="bg"
+            class="layerImg"
+          />
+          <img
+            id="buildingLayer"
+            data-src="./assets/9.png"
+            class="layerImg"
+            data-options="maxZoom:1.5"
+          />
+        </div>
+      </div>
+    
+    <script>
+      $(document).ready(function () {
+        //  setTimeout(function(){
+        //      $(".zoomHolder").css("height", "100vh")
+        //      $(".layerImg").css("top", "100% !important")//.css("transform", "translateY(-50%) !important")
+        //  }, 3000);
+        // $("#streetLayer").imgLoading({
+        //   end: function (e, data) {
+        //     //
+        //     //const vh = $(".zoomHolder").height();
+        //     // const pinch = $("#streetLayer").height();
+        //     // console.log(pinch);
+        //     //$(".zoomHolder").css("top", `${(vh - pinch) / 2}px`);
+        //     //
+        //   },
+        // });
+      });
+
+//       $(document).ready(function () {
+//         $("#streetLayer").load(function(){
+//           var zoomHolderWidth =  $(".zoomHolder").width()
+//           var imageHeight = $(".layerImg").height()
+//           var imageWidth = $(".layerImg").width()
+// var computedImageHeight = (zoomHolderWidth * imageHeight)/imageWidth
+// console.log({computedImageHeight})
+//           vh = $(window).height()
+//           var top = (computedImageHeight/vh)*100
+//           top2 = (100 -top)/2
+//           console.log({top: (100 -top)/2})
+//         //   dh = $(document).height()
+//          // console.log((imageHeight * 548)/zoomHolderWidth)
+//           console.log({vh})
+//         // console.log({dh})
+
+//            console.log({imageHeight})
+//           console.log({zoomHolderWidth})
+//            console.log({imageWidth})
+//            console.log({computedImageHeight})
+
+//   setTimeout(function(){
+//      // $(".pinch").ccs("position", "absolute").css("translateX", "450px !important")
+           
+//          }, 3000);
+
+
+//         })
+       
+
+
+//       });
+
+      
+    </script>
+  </body>
+</html>
