@@ -16,7 +16,12 @@
         position:absolute;
         width: 100%;
         height: auto;
+        top: 0;
+        z-index: 1;
       }
+      /* #image2{
+          z-index: 100000;
+      } */
     </style>
     <script src="./jquery-3.4.1.min.js"></script>
     <script src="./jquery.smoothZoom.min.js"></script>
@@ -52,10 +57,34 @@
       </div>
     </div> -->
 
-    <img id="yourImageID" src="./your_image.jpg" alt="" />
-    <!-- <img id="yourImageID" src="./your_image.jpg" alt="" /> -->
+    <img id="yourImageID" src="./assets/9.png" alt="" />
+    <img id="yourImageID2" src="./assets/base_bw.png" alt="" />
+
 
     <script>
+// (function() {
+//     var ev = new $.Event('style'),
+//         orig = $.fn.css;
+//     $.fn.css = function() {
+//         $(this).trigger(ev);
+//         return orig.apply(this, arguments);
+//     }
+// })();
+// $('#yourImageID').bind('style', function(e) {
+//     var string =  JSON.stringify( $(this).attr('style')) 
+
+// dosomethin()
+// });
+// function dosomethin(){
+//     $('#yourImageID').css("width")
+// }
+// // $('p').width(100);
+// $('p').css('color','red');
+
+
+
+
+
            $("#yourImageID").on("load", function () {
                let imageWidth = $(this).width()
                let imageHeight = $(this).height()
@@ -71,14 +100,28 @@
           $("#yourImageID").smoothZoom({
  height: imageHeight,
  width: imageWidth,
+" border_SIZE": 0,
             full_BROWSER_SIZE: "YES",
             zoom_BUTTONS_SHOW: "NO",
             pan_BUTTONS_SHOW: "NO",
+            on_ZOOM_PAN_UPDATE: updateImage2
           });
             })
+            function updateImage2(){
+          let transform = $("#yourImageID").css("transform")
+          let transformOrigin = $("#yourImageID").css("transform-origin")
+          console.log(transformOrigin)
+          $("#yourImageID2").css("transform", transform)
+          $("#yourImageID2").css("transform-origin", transformOrigin)
+        //   $("#yourImageID2").css("transform-origin", transformOrigin)
+        //   $("#yourImageID2").css("pointer-events", "none")
+         
+
+          
+      }
       jQuery(function ($) {
     
-      
+     
   
       });
     </script>
