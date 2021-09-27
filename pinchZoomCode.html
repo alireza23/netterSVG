@@ -35,6 +35,9 @@
       }
     </style>
     <script src="./jquery-3.4.1.min.js"></script>
+    <script src="./jquery.smoothZoom.min.js"></script>
+
+
   </head>
 
   <body>
@@ -53,22 +56,71 @@
           style="width: 100%; height: auto"
           alt=""
         />
-        <div
-          style="
-            position: absolute;
-            top: 150px;
-            left: 150px;
-            background-color: hotpink;
-            width: 50px;
-            height: 50px;
-            pointer-events: none;
-          "
-        ></div>
+     
       </div>
+      <div
+      style="
+        position: absolute;
+        top: 150px;
+        left: 150px;
+        background-color: hotpink;
+        width: 50px;
+        height: 50px;
+        pointer-events: none;
+      "
+    ></div>
     </div>
+ 
 
-    <script type="text/javascript" src="./hammer.min.js"></script>
-    <script type="text/javascript">
+    <script>
+
+
+
+        jQuery(function ($) {
+  
+  
+  
+          $("#mContainer").smoothZoom({
+           
+            zoom_BUTTONS_SHOW: "NO",
+            pan_BUTTONS_SHOW: "NO",
+  
+            zoom_OUT_TO_FIT: true ,
+                     pan_LIMIT_BOUNDARY: "yes",
+          });
+        });
+      </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- uncomment this to get back pinch zoom code -->
+    <!-- <script type="text/javascript" src="./hammer.min.js"></script>
+    <script type="text/javascript"> 
       // We listen to the resize event
       window.addEventListener("resize", () => {
         // We execute the same script as before
@@ -321,6 +373,6 @@
             ")";
         }
       });
-    </script>
+    </script> -->
   </body>
 </html>
