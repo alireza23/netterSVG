@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+    <!-- <style>
+        img{
+            width: 100%;
+            height: auto;
+            background-color: darkgoldenrod;
+        }
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        #yourImageID{
+            width: 640px !important;
+            height: auto;
+        }
+/* #image2{
+    transform: translateY(-1300px);
+} */
+    
+    </style> -->
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      /* .img{
+          width: 100%;
+          height: auto;
+      } */
+      #image2 {
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+.noSel {
+    width: 100vw !important;
+    height: 100vh !important;
+}
+    </style>
+    <script src="./jquery-1.11.1.js"></script>
+    <script src="./jquery.smoothZoom.min.js"></script>
+    <!-- <script>
+    jQuery(function($){
+        var vh = $(window).height()
+        var vw = $(window).width()
+  $(document).ready(function () {
+    $('#yourImageID').smoothZoom({
+          
+          height: `${vh}px`,
+          width: `${vw}px`,
+          pan_BUTTONS_SHOW: "NO",
+      pan_LIMIT_BOUNDARY: "NO",
+      zoom_BUTTONS_SHOW: false,
+    //   responsive: true
+    
+      });
+    var width = $(".noSel").width()
+        var height = $(".noSel").height()
+        console.log({width, height, vh, vw})
+
+  });
+        // $(".image").css("width", `${width}px`).css("height", `auto`)
+    
+    });
+    </script> -->
+    <script>
+
+
+
+      jQuery(function ($) {
+
+
+
+        $("#yourImageID").smoothZoom({
+          width: 547,
+          height: 680,
+          zoom_BUTTONS_SHOW: "NO",
+          pan_BUTTONS_SHOW: "NO",
+
+          zoom_OUT_TO_FIT: true ,
+                   pan_LIMIT_BOUNDARY: "yes",
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <!-- <img id="yourImageID" class="image"  id="image1" src="./assets/base_bw.png" /> -->
+  
+      <img id="yourImageID" class="image" src="./assets/base_bw.png" />
+    
+  </body>
+</html>

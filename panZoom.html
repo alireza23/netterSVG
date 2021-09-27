@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <script src="./jquery-3.4.1.min.js"></script> -->
+    <!-- <script src="https://unpkg.com/@panzoom/panzoom@4.4.1/dist/panzoom.min.js"></script> -->
+    <script src="./panZoom.js"></script>
+
+    <title>Document</title>
+  <style>
+      img{
+          width: 100%;
+          height: auto;
+      }
+  </style>
+</head>
+<body>
+
+        <img  id="mContainer" src="./assets/base_bw.png" alt="">
+        <!-- <img src="./assets/1.png" alt=""> -->
+
+    <script>
+const elem = document.getElementById('mContainer')
+const panzoom = Panzoom(elem, {
+  maxScale: 2,
+  minScale: 1,
+  
+
+
+})
+panzoom.pan(20, 20)
+panzoom.zoom(1, { animate: true })
+
+// Panning and pinch zooming are bound automatically (unless disablePan is true).
+// There are several available methods for zooming
+// that can be bound on button clicks or mousewheel.
+
+elem.parentElement.addEventListener('wheel', panzoom.zoomWithWheel)
+    </script>
+</body>
+</html>
