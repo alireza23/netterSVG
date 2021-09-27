@@ -24,7 +24,7 @@
       #fix {
         background-color: rgb(226, 248, 250);
         width: 100vw;
-        height: calc(var(--vh, 1vh) * 100);;
+        height: calc(var(--vh, 1vh) * 100);
       }
       #mContainer {
         width: 100%;
@@ -53,22 +53,28 @@
           style="width: 100%; height: auto"
           alt=""
         />
-        <div style="position: absolute; top: 150px; left: 150px; background-color: hotpink; width: 50px; height: 50px; pointer-events: none;"></div>
+        <div
+          style="
+            position: absolute;
+            top: 150px;
+            left: 150px;
+            background-color: hotpink;
+            width: 50px;
+            height: 50px;
+            pointer-events: none;
+          "
+        ></div>
       </div>
     </div>
 
     <script type="text/javascript" src="./hammer.min.js"></script>
     <script type="text/javascript">
-
-// We listen to the resize event
-window.addEventListener('resize', () => {
-  // We execute the same script as before
-  let vh = window.innerHeight * 0.01;
-  document.documentElement.style.setProperty('--vh', `${vh}px`);
-});
-
-
-
+      // We listen to the resize event
+      window.addEventListener("resize", () => {
+        // We execute the same script as before
+        let vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty("--vh", `${vh}px`);
+      });
 
       let myLastX = 0;
       let myLastY = 0;
@@ -86,7 +92,7 @@ window.addEventListener('resize', () => {
         let width = $("#image1").width();
         let height = $("#image1").height();
         var myVH = $("#fix").height();
-let verticalMargin = (myVH - height) / 2
+        let verticalMargin = (myVH - height) / 2;
         $("#mContainer").css("margin-top", `${verticalMargin}px`);
         console.log({ width, height });
         var originalSize = {
@@ -176,6 +182,7 @@ let verticalMargin = (myVH - height) / 2
 
         hammertime.on("doubletap", function (e) {
           var scaleFactor = 1;
+          console.log("doubleTap")
           if (current.zooming === false) {
             current.zooming = true;
           } else {
@@ -217,23 +224,41 @@ let verticalMargin = (myVH - height) / 2
           }
           let dx = e.deltaX;
           let dy = e.deltaY;
-          var xBound = (current.width - width)/2
-          var yBound = verticalMargin
+          var xBound = (current.width - width) / 2;
+          var yBound = verticalMargin;
           myLastX = last.x + e.deltaX - fixHammerjsDeltaIssue.x;
           myLastY = last.y + e.deltaY - fixHammerjsDeltaIssue.y;
-          if (!(myLastX >= xBound && dx > 0) && !(myLastX <= -xBound && dx < 0)) {
+          if (
+            !(myLastX >= xBound && dx > 0) &&
+            !(myLastX <= -xBound && dx < 0)
+          ) {
             current.x = last.x + e.deltaX - fixHammerjsDeltaIssue.x;
-            
-            console.log({ x: myLastX, dx, currentWidth: current.width, width, xBound });
+
+            console.log({type:"pan",
+              x: myLastX,
+              dx,
+              currentWidth: current.width,
+              width,
+              xBound,
+            });
           }
 
-          if (!(myLastY >= yBound && dy > 0) && !(myLastY <= -yBound && dy < 0)) {
+          if (
+            !(myLastY >= yBound && dy > 0) &&
+            !(myLastY <= -yBound && dy < 0)
+          ) {
             current.y = last.y + e.deltaY - fixHammerjsDeltaIssue.y;
-            
-            console.log({ y: myLastY, dy, currentHeight: current.height, height, yBound });
+
+            console.log({type:"pan",
+              y: myLastY,
+              dy,
+              currentHeight: current.height,
+              height,
+              yBound,
+            });
           }
-          
-        //  current.y = last.y + e.deltaY - fixHammerjsDeltaIssue.y;
+
+          //  current.y = last.y + e.deltaY - fixHammerjsDeltaIssue.y;
 
           lastEvent = "pan";
           update();
@@ -241,8 +266,40 @@ let verticalMargin = (myVH - height) / 2
 
         hammertime.on("pinch", function (e) {
           var d = scaleFrom(pinchZoomOrigin, last.z, last.z * e.scale);
-          current.x = d.x + last.x + e.deltaX;
-          current.y = d.y + last.y + e.deltaY;
+          myLastX = d.x +last.x + e.deltaX
+          myLastY = d.y + last.y + e.deltaY
+          
+          if (
+            !(myLastX >= xBound && dx > 0) &&
+            !(myLastX <= -xBound && dx < 0)
+          ) {
+            current.x = d.x + last.x + e.deltaX;
+
+            console.log({type:"pinch",
+              x: myLastX,
+              dx,
+              currentWidth: current.width,
+              width,
+              xBound,
+            });
+          }
+
+          if (
+            !(myLastY >= yBound && dy > 0) &&
+            !(myLastY <= -yBound && dy < 0)
+          ) {
+            current.y = d.y + last.y + e.deltaY;
+
+            console.log({type:"pinch",
+              y: myLastY,
+              dy,
+              currentHeight: current.height,
+              height,
+              yBound,
+            });
+          }
+        //   current.x = d.x + last.x + e.deltaX;
+        //   current.y = d.y + last.y + e.deltaY;
           current.z = d.z + last.z;
           lastEvent = "pinch";
           update();
@@ -296,7 +353,5 @@ let verticalMargin = (myVH - height) / 2
         }
       });
     </script>
-
-    
   </body>
 </html>
