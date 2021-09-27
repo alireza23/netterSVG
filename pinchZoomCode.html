@@ -10,11 +10,16 @@
         padding: 0;
       }
 
-
+      img {
+        /* fix 4px image */
+        vertical-align: bottom;
+        position:absolute;
+        width: 100%;
+        height: auto;
+      }
     </style>
     <script src="./jquery-3.4.1.min.js"></script>
     <script src="./jquery.smoothZoom.min.js"></script>
-
   </head>
 
   <body>
@@ -47,39 +52,37 @@
       </div>
     </div> -->
 
+    <img id="yourImageID" src="./your_image.jpg" alt="" />
+    <!-- <img id="yourImageID" src="./your_image.jpg" alt="" /> -->
 
-<img id="yourImageID" src="./assets/base_bw.png" alt="">
-
-<script>
-    jQuery(function($){
-        let vh = window.innerHeight
-        console.log(vh)
-        window.addEventListener("resize", () => {
-        console.log("resize")
-        let vh = window.innerHeight
+    <script>
+           $("#yourImageID").on("load", function () {
+               let imageWidth = $(this).width()
+               let imageHeight = $(this).height()
+            let vh = window.innerHeight;
+          let vw = window.innerWidth;
+          console.log(imageHeight);
+          window.addEventListener("resize", () => {
+            console.log("resize");
+            let vh = window.innerHeight;
+            let vw = window.innerWidth;
+          });
        
-      });
-	$('#yourImageID').smoothZoom({
-		
-		zoom_BUTTONS_SHOW: 'NO',
-        pan_BUTTONS_SHOW: 'NO'
-	});
-});
-</script>
-
-
-
-
-
-
-
-
-
-
-
-
-
+          $("#yourImageID").smoothZoom({
+ height: imageHeight,
+ width: imageWidth,
+            full_BROWSER_SIZE: "YES",
+            zoom_BUTTONS_SHOW: "NO",
+            pan_BUTTONS_SHOW: "NO",
+          });
+            })
+      jQuery(function ($) {
     
+      
+  
+      });
+    </script>
+
     <!-- <script type="text/javascript" src="./hammer.min.js"></script>
     <script type="text/javascript"> 
       // We listen to the resize event
