@@ -28,7 +28,7 @@
       }
       #mContainer {
         width: 100%;
-        margin-top: 100px;
+
         position: absolute;
 
         background-color: gray;
@@ -36,10 +36,11 @@
     </style>
     <script src="./jquery-3.4.1.min.js"></script>
     <script src="./jquery.smoothZoom.min.js"></script>
+
   </head>
 
   <body>
-    <div id="fix">
+    <!-- <div id="fix">
       <div id="mContainer">
         <img
           id="image1"
@@ -54,33 +55,51 @@
           style="width: 100%; height: auto"
           alt=""
         />
+        <div
+          style="
+            position: absolute;
+            top: 150px;
+            left: 150px;
+            background-color: hotpink;
+            width: 50px;
+            height: 50px;
+            pointer-events: none;
+          "
+        ></div>
       </div>
-      <div
-        style="
-          position: absolute;
-          top: 150px;
-          left: 150px;
-          background-color: hotpink;
-          width: 50px;
-          height: 50px;
-          pointer-events: none;
-        "
-      ></div>
-    </div>
+    </div> -->
 
-    <script>
-      jQuery(function ($) {
-        $("#mContainer").smoothZoom({
-          zoom_BUTTONS_SHOW: "NO",
-          pan_BUTTONS_SHOW: "NO",
 
-          zoom_OUT_TO_FIT: true,
-          pan_LIMIT_BOUNDARY: "yes",
-        });
+<img id="yourImageID" src="./assets/base_bw.png" alt="">
+
+<script>
+    jQuery(function($){
+        let vh = window.innerHeight
+        window.addEventListener("resize", () => {
+        console.log("resize")
+        let vh = window.innerHeight
+       
       });
-    </script>
+	$('#yourImageID').smoothZoom({
+		width: 548,
+		height: vh
+	});
+});
+</script>
 
-    <!-- uncomment this to get back pinch zoom code -->
+
+
+
+
+
+
+
+
+
+
+
+
+    
     <!-- <script type="text/javascript" src="./hammer.min.js"></script>
     <script type="text/javascript"> 
       // We listen to the resize event
@@ -335,6 +354,6 @@
             ")";
         }
       });
-    </script> -->
+    </script>-->
   </body>
 </html>
