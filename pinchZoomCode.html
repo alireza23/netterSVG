@@ -182,7 +182,7 @@
 
         hammertime.on("doubletap", function (e) {
           var scaleFactor = 1;
-          console.log("doubleTap")
+          console.log("doubleTap");
           if (current.zooming === false) {
             current.zooming = true;
           } else {
@@ -234,7 +234,7 @@
           ) {
             current.x = last.x + e.deltaX - fixHammerjsDeltaIssue.x;
 
-            console.log({type:"pan",
+            console.log({
               x: myLastX,
               dx,
               currentWidth: current.width,
@@ -249,7 +249,7 @@
           ) {
             current.y = last.y + e.deltaY - fixHammerjsDeltaIssue.y;
 
-            console.log({type:"pan",
+            console.log({
               y: myLastY,
               dy,
               currentHeight: current.height,
@@ -257,8 +257,9 @@
               yBound,
             });
           }
+          current.x = last.x + e.deltaX - fixHammerjsDeltaIssue.x;
 
-          //  current.y = last.y + e.deltaY - fixHammerjsDeltaIssue.y;
+          current.y = last.y + e.deltaY - fixHammerjsDeltaIssue.y;
 
           lastEvent = "pan";
           update();
@@ -266,40 +267,8 @@
 
         hammertime.on("pinch", function (e) {
           var d = scaleFrom(pinchZoomOrigin, last.z, last.z * e.scale);
-          myLastX = d.x +last.x + e.deltaX
-          myLastY = d.y + last.y + e.deltaY
-          
-          if (
-            !(myLastX >= xBound && dx > 0) &&
-            !(myLastX <= -xBound && dx < 0)
-          ) {
-            current.x = d.x + last.x + e.deltaX;
-
-            console.log({type:"pinch",
-              x: myLastX,
-              dx,
-              currentWidth: current.width,
-              width,
-              xBound,
-            });
-          }
-
-          if (
-            !(myLastY >= yBound && dy > 0) &&
-            !(myLastY <= -yBound && dy < 0)
-          ) {
-            current.y = d.y + last.y + e.deltaY;
-
-            console.log({type:"pinch",
-              y: myLastY,
-              dy,
-              currentHeight: current.height,
-              height,
-              yBound,
-            });
-          }
-        //   current.x = d.x + last.x + e.deltaX;
-        //   current.y = d.y + last.y + e.deltaY;
+          current.x = d.x + last.x + e.deltaX;
+          current.y = d.y + last.y + e.deltaY;
           current.z = d.z + last.z;
           lastEvent = "pinch";
           update();
