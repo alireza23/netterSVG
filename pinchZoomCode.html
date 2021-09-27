@@ -24,7 +24,7 @@
       #fix {
         background-color: rgb(226, 248, 250);
         width: 100vw;
-        height: 100vh;
+        height: calc(var(--vh, 1vh) * 100);;
       }
       #mContainer {
         width: 100%;
@@ -53,11 +53,23 @@
           style="width: 100%; height: auto"
           alt=""
         />
+        <div style="position: absolute; top: 150px; left: 150px; background-color: hotpink; width: 50px; height: 50px; pointer-events: none;"></div>
       </div>
     </div>
 
     <script type="text/javascript" src="./hammer.min.js"></script>
     <script type="text/javascript">
+
+// We listen to the resize event
+window.addEventListener('resize', () => {
+  // We execute the same script as before
+  let vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--vh', `${vh}px`);
+});
+
+
+
+
       let myLastX = 0;
       let myLastY = 0;
       $(document).ready(function () {
@@ -73,8 +85,8 @@
         var lastEvent = undefined;
         let width = $("#image1").width();
         let height = $("#image1").height();
-        var vh = $("#fix").height();
-let verticalMargin = (vh - height) / 2
+        var myVH = $("#fix").height();
+let verticalMargin = (myVH - height) / 2
         $("#mContainer").css("margin-top", `${verticalMargin}px`);
         console.log({ width, height });
         var originalSize = {
