@@ -10,29 +10,7 @@
         padding: 0;
       }
 
-      img {
-        touch-action: auto;
-        height: auto;
-        width: 100%;
-        position: absolute;
-        position: absolute;
-        display: block;
-      }
-      #image2 {
-        pointer-events: none;
-      }
-      #fix {
-        background-color: rgb(226, 248, 250);
-        width: 100vw;
-        height: calc(var(--vh, 1vh) * 100);
-      }
-      #mContainer {
-        width: 100%;
 
-        position: absolute;
-
-        background-color: gray;
-      }
     </style>
     <script src="./jquery-3.4.1.min.js"></script>
     <script src="./jquery.smoothZoom.min.js"></script>
@@ -75,14 +53,16 @@
 <script>
     jQuery(function($){
         let vh = window.innerHeight
+        console.log(vh)
         window.addEventListener("resize", () => {
         console.log("resize")
         let vh = window.innerHeight
        
       });
 	$('#yourImageID').smoothZoom({
-		width: 548,
-		height: vh
+		
+		zoom_BUTTONS_SHOW: 'NO',
+        pan_BUTTONS_SHOW: 'NO'
 	});
 });
 </script>
